@@ -1,5 +1,6 @@
 package com.example.ben.gallery;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         addListenerOnButton();
-        ArrayList arraylist = new ArrayList();
+        /*ArrayList arraylist = new ArrayList();
         ObjectSerializer serial = new ObjectSerializer();
         arraylist.add(new imgGallery("totoro","hello","Richmond","09/20/17"));
 
@@ -41,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e){
             e.printStackTrace();
         }
-        editor.commit();
+        editor.commit();*/
     }
-    private void save(){
+    /*private void save(){
         ObjectSerializer serial1 = new ObjectSerializer();
         ArrayList list= new ArrayList();
 
@@ -53,10 +54,17 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
     public void addListenerOnButton() {
         image = (ImageView) findViewById(R.id.gallery);
-
+        Button capture = (Button) findViewById(R.id.capture);
+        Button search = (Button) findViewById(R.id.search);
+        search.setOnClickListener(new View.OnClickListener() {
+                                       @Override
+                                       public void onClick(View v) {
+                                           startActivity(new Intent(MainActivity.this,searchDate.class));
+                                       }
+                                   });
         nxt = (Button) findViewById(R.id.btn_nxt);
         nxt.setOnClickListener(new OnClickListener() {
             @Override
@@ -66,6 +74,14 @@ public class MainActivity extends AppCompatActivity {
                 caption.setText("Totoro");
             }
 
+        });
+
+        capture.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                startActivity(intent);
+            }
         });
 
         prev = (Button) findViewById(R.id.btn_prev);
