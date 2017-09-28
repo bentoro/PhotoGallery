@@ -75,14 +75,20 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-
         capture.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,Capture.class));
+            }
+
+        });
+        /*capture.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
                 startActivity(intent);
             }
-        });
+        });*/
 
         prev = (Button) findViewById(R.id.btn_prev);
         prev.setOnClickListener(new OnClickListener() {
