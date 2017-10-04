@@ -44,17 +44,7 @@ public class MainActivity extends AppCompatActivity {
         }
         editor.commit();*/
     }
-    /*private void save(){
-        ObjectSerializer serial1 = new ObjectSerializer();
-        ArrayList list= new ArrayList();
 
-        SharedPreferences pref = getSharedPreferences("User",0);
-        try{
-            list = (ArrayList) serial1.deserialize((pref.getString("list", serial1.serialize(new ArrayList()))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
     public void addListenerOnButton() {
         image = (ImageView) findViewById(R.id.gallery);
         Button capture = (Button) findViewById(R.id.capture);

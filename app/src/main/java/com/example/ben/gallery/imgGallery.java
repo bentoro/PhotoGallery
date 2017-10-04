@@ -18,18 +18,22 @@ public class imgGallery {
     }
 
     public String getImage(){
+
         return this.image;
     }
 
     public String getCaption(){
+
         return this.caption;
     }
 
     public String getLocation(){
+
         return this.location;
     }
 
     public String getTime(){
+
         return this.time;
     }
 
