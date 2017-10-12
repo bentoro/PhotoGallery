@@ -20,8 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".searchDate" />
-        <activity android:name=".Capture"></activity>
+        <activity android:name=".startDate" />
+        <activity android:name=".Capture" />
+        <activity android:name=".Facebook" />
+        <activity android:name=".endDate" />
+        <activity android:name=".search"></activity>
     </application>
 
 </manifest>
