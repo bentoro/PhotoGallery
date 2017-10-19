@@ -46,7 +46,7 @@
         android:layout_width="237dp"
         android:layout_height="48dp"
         android:ems="10"
-        android:inputType="textMultiLine"
+        android:inputType="none"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"

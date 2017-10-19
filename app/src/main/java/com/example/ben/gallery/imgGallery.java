@@ -1,7 +1,5 @@
 package com.example.ben.gallery;
 
-import java.security.PrivateKey;
-
 /**
  * Created by Ben on 2017-09-17.
  */
@@ -12,6 +10,8 @@ public class imgGallery {
     private int year;
     private int day;
     private int month;
+    private String caption;
+    private String location;
     //private String caption;
     //private String location;
 
@@ -19,8 +19,10 @@ public class imgGallery {
 
     }
 
-    public imgGallery(int id,String image, /*String caption, String location,*/ int year,int month,int day){
+    public imgGallery(int id,String location, String caption,String image,int year,int month,int day){
         this.id = id;
+        this.location = location;
+        this.caption = caption;
         this.image = image;
         this.year = year;
         this.month = month;
@@ -30,6 +32,15 @@ public class imgGallery {
     public int getId(){
         return this.id;
     }
+    public String getLocation(){
+
+        return this.location;
+    }
+    public String getCaption(){
+
+        return this.caption;
+    }
+
     public String getImage(){
 
         return this.image;
@@ -58,6 +69,14 @@ public class imgGallery {
 
     public void setId(int id){
          this.id = id;
+    }
+    public void setLocation(String location){
+
+        this.location = location;
+    }
+    public void setCaption(String caption){
+
+        this.caption = caption;
     }
     public void setImage(String image){
 

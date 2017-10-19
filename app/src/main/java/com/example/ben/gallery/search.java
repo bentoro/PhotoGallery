@@ -93,7 +93,7 @@ public class search extends AppCompatActivity {
                 System.out.println(((cal1)).compareTo((cal)));
                 System.out.println((cal2).compareTo((cal1)));
                 System.out.println("added: "+gallery.get(i).getMonth()+"-"+gallery.get(i).getDay());
-                filteredgallery.add(new imgGallery((filteredgallery.size()+1),gallery.get(i).getImage(),gallery.get(i).getYear(),gallery.get(i).getMonth(),gallery.get(i).getDay()));
+                filteredgallery.add(new imgGallery((filteredgallery.size()+1),gallery.get(i).getLocation(),gallery.get(i).getCaption(),gallery.get(i).getImage(),gallery.get(i).getYear(),gallery.get(i).getMonth(),gallery.get(i).getDay()));
                 //System.out.println("ADDED DATE: "+filteredgallery.get(filteredgallery.size()).getMonth()+"-"+filteredgallery.get(filteredgallery.size()+1).getDay());
             } else {
 
@@ -110,16 +110,12 @@ public class search extends AppCompatActivity {
     public void setFirst(){
         List<imgGallery> gallery1 = date(y1,y2,m1,m2,d1,d2);
         if( gallery1.size() ==0){
-
         } else {
             String img = (gallery1.get(current).getImage());
             String uri = "drawable/"+img;
             image.setImageResource(getResources().getIdentifier(uri,"drawable",getPackageName()));
             caption.setText(gallery1.get(current).getYear()+"-"+gallery1.get(current).getMonth()+"-"+gallery1.get(current).getDay());
-
         }
-
-
     }
 
     public void prev(){
