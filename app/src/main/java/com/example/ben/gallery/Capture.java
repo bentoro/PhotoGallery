@@ -95,7 +95,7 @@ public class Capture extends AppCompatActivity {
         image.setImageBitmap(getThumbnailBitmap(url, 300));
         System.out.println("URL OF IMAGE: " + url);
         int y = Calendar.getInstance().get(Calendar.YEAR);
-        int m = Calendar.getInstance().get(Calendar.MONTH);
+        int m = Calendar.getInstance().get(Calendar.MONTH)+1;
         int d = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
         db.addimgGallery(new imgGallery(1,address,caption,url,y,m,d));
     }

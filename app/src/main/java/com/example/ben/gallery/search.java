@@ -70,7 +70,6 @@ public class search extends AppCompatActivity {
             cal.set(Calendar.DAY_OF_MONTH, d1);
             String dat = f.format(cal.getTime());
 
-
             Calendar cal1 = Calendar.getInstance();
             cal1.clear();
             cal1.set(Calendar.YEAR, gallery.get(i).getYear());
@@ -186,7 +185,7 @@ public class search extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(search.this,startDate.class));
+                startActivity(new Intent(search.this,date.class));
             }
         });
 
