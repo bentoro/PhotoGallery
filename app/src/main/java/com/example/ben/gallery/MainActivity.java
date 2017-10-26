@@ -50,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        System.out.println("ONCREATE");
+        ImageView img = (ImageView) findViewById(R.id.gallery);
+        boolean test = img.getDrawable() != null;
+        System.out.println("RESULT: !!!! : "+test);
         SharedPreferences settings = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
         if (settings.contains("y1") && settings.contains("y2")&& settings.contains("m1")&& settings.contains("m2")
                 && settings.contains("d1")&& settings.contains("d2")) {
@@ -173,20 +175,21 @@ public class MainActivity extends AppCompatActivity {
                                        }
                                    });
 
-        camera.setOnClickListener(new OnClickListener() {
+        /*camera.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,Capture.class));
             }
 
-        });
+        });*/
         camera.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                }
+                }*/
+                startActivity(new Intent(MainActivity.this,Capture.class));
 
             }
 
