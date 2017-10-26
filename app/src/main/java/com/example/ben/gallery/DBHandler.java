@@ -124,10 +124,11 @@ public class DBHandler extends SQLiteOpenHelper {
 
     }
 
-    public List<imgGallery> date(int y1, int y2,int m1,int m2, int d1, int d2) {
+    public List<imgGallery> date(List<imgGallery> g, int y1, int y2,int m1,int m2, int d1, int d2) {
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        //SQLiteDatabase db = this.getWritableDatabase();
         //get all from the database
-        List<imgGallery> gallery = getAllimgGallerys();
+        List<imgGallery> gallery = g;
         List<imgGallery> filteredgallery = new ArrayList<imgGallery>();
         int i;
         for (i =0; i<=gallery.size()-1; i++){
@@ -161,4 +162,169 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         return filteredgallery;
     }
+
+    public List<imgGallery> dateCaption(List<imgGallery> g, int y1, int y2,int m1,int m2, int d1, int d2, String caption) {
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        //SQLiteDatabase db = this.getWritableDatabase();
+        //get all from the database
+        List<imgGallery> gallery = g;
+        List<imgGallery> filteredgallery = new ArrayList<imgGallery>();
+        int i;
+        for (i =0; i<=gallery.size()-1; i++){
+            Calendar cal = Calendar.getInstance();
+            cal.clear();
+            cal.set(Calendar.YEAR, y1);
+            cal.set(Calendar.MONTH, (m1-1));
+            cal.set(Calendar.DAY_OF_MONTH, d1);
+            String dat = f.format(cal.getTime());
+
+            Calendar cal1 = Calendar.getInstance();
+            cal1.clear();
+            cal1.set(Calendar.YEAR, gallery.get(i).getYear());
+            cal1.set(Calendar.MONTH, (gallery.get(i).getMonth()-1));
+            cal1.set(Calendar.DAY_OF_MONTH, gallery.get(i).getDay());
+            String dat1 = f.format(cal1.getTime());
+
+            Calendar cal2 = Calendar.getInstance();
+            cal2.clear();
+            cal2.set(Calendar.YEAR, y2);
+            cal2.set(Calendar.MONTH, (m2-1));
+            cal2.set(Calendar.DAY_OF_MONTH, d2);
+            String dat2 = f.format(cal2.getTime());
+
+
+            if((((cal1)).compareTo((cal)) * (cal2).compareTo((cal1)) >= 0) && gallery.get(i).getCaption().toLowerCase().contains(caption)){
+                filteredgallery.add(new imgGallery((filteredgallery.size()+1),gallery.get(i).getLocation(),gallery.get(i).getCaption(),gallery.get(i).getImage(),gallery.get(i).getYear(),gallery.get(i).getMonth(),gallery.get(i).getDay()));
+            } else {
+
+            }
+        }
+        return filteredgallery;
+    }
+
+    public List<imgGallery> dateCaptionLocation(List<imgGallery> g, int y1, int y2,int m1,int m2, int d1, int d2, String caption,String location) {
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        //SQLiteDatabase db = this.getWritableDatabase();
+        //get all from the database
+        List<imgGallery> gallery = g;
+        List<imgGallery> filteredgallery = new ArrayList<imgGallery>();
+        int i;
+        for (i =0; i<=gallery.size()-1; i++){
+            Calendar cal = Calendar.getInstance();
+            cal.clear();
+            cal.set(Calendar.YEAR, y1);
+            cal.set(Calendar.MONTH, (m1-1));
+            cal.set(Calendar.DAY_OF_MONTH, d1);
+            String dat = f.format(cal.getTime());
+
+            Calendar cal1 = Calendar.getInstance();
+            cal1.clear();
+            cal1.set(Calendar.YEAR, gallery.get(i).getYear());
+            cal1.set(Calendar.MONTH, (gallery.get(i).getMonth()-1));
+            cal1.set(Calendar.DAY_OF_MONTH, gallery.get(i).getDay());
+            String dat1 = f.format(cal1.getTime());
+
+            Calendar cal2 = Calendar.getInstance();
+            cal2.clear();
+            cal2.set(Calendar.YEAR, y2);
+            cal2.set(Calendar.MONTH, (m2-1));
+            cal2.set(Calendar.DAY_OF_MONTH, d2);
+            String dat2 = f.format(cal2.getTime());
+
+
+            if((((cal1)).compareTo((cal)) * (cal2).compareTo((cal1)) >= 0) && gallery.get(i).getCaption().toLowerCase().contains(caption) && gallery.get(i).getLocation().toLowerCase().contains(location)){
+                filteredgallery.add(new imgGallery((filteredgallery.size()+1),gallery.get(i).getLocation(),gallery.get(i).getCaption(),gallery.get(i).getImage(),gallery.get(i).getYear(),gallery.get(i).getMonth(),gallery.get(i).getDay()));
+            } else {
+
+            }
+        }
+        return filteredgallery;
+    }
+
+    public List<imgGallery> CaptionLocation(List<imgGallery> g, String caption,String location) {
+        //get all from the database
+        List<imgGallery> gallery = g;
+        List<imgGallery> filteredgallery = new ArrayList<imgGallery>();
+        int i;
+        for (i =0; i<=gallery.size()-1; i++){
+            if(gallery.get(i).getCaption().toLowerCase().contains(caption) && gallery.get(i).getLocation().toLowerCase().contains(location)){
+                filteredgallery.add(new imgGallery((filteredgallery.size()+1),gallery.get(i).getLocation(),gallery.get(i).getCaption(),gallery.get(i).getImage(),gallery.get(i).getYear(),gallery.get(i).getMonth(),gallery.get(i).getDay()));
+            } else {
+
+            }
+        }
+        return filteredgallery;
+    }
+
+    public List<imgGallery> dateLocation(List<imgGallery> g,int y1, int y2,int m1,int m2, int d1, int d2,String location) {
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        //SQLiteDatabase db = this.getWritableDatabase();
+        //get all from the database
+        List<imgGallery> gallery = g;
+        List<imgGallery> filteredgallery = new ArrayList<imgGallery>();
+        int i;
+        for (i =0; i<=gallery.size()-1; i++){
+            Calendar cal = Calendar.getInstance();
+            cal.clear();
+            cal.set(Calendar.YEAR, y1);
+            cal.set(Calendar.MONTH, (m1-1));
+            cal.set(Calendar.DAY_OF_MONTH, d1);
+            String dat = f.format(cal.getTime());
+
+            Calendar cal1 = Calendar.getInstance();
+            cal1.clear();
+            cal1.set(Calendar.YEAR, gallery.get(i).getYear());
+            cal1.set(Calendar.MONTH, (gallery.get(i).getMonth()-1));
+            cal1.set(Calendar.DAY_OF_MONTH, gallery.get(i).getDay());
+            String dat1 = f.format(cal1.getTime());
+
+            Calendar cal2 = Calendar.getInstance();
+            cal2.clear();
+            cal2.set(Calendar.YEAR, y2);
+            cal2.set(Calendar.MONTH, (m2-1));
+            cal2.set(Calendar.DAY_OF_MONTH, d2);
+            String dat2 = f.format(cal2.getTime());
+
+
+            if((((cal1)).compareTo((cal)) * (cal2).compareTo((cal1)) >= 0) && gallery.get(i).getLocation().toLowerCase().contains(location)){
+                filteredgallery.add(new imgGallery((filteredgallery.size()+1),gallery.get(i).getLocation(),gallery.get(i).getCaption(),gallery.get(i).getImage(),gallery.get(i).getYear(),gallery.get(i).getMonth(),gallery.get(i).getDay()));
+            } else {
+
+            }
+        }
+        return filteredgallery;
+    }
+
+    public List<imgGallery> location(List<imgGallery> g, String location) {
+        //SQLiteDatabase db = this.getWritableDatabase();
+        //get all from the database
+        List<imgGallery> gallery = g;
+        List<imgGallery> filteredgallery = new ArrayList<imgGallery>();
+        int i;
+        for (i =0; i<=gallery.size()-1; i++){
+            if (gallery.get(i).getLocation().toLowerCase().contains(location)){
+                filteredgallery.add(new imgGallery((filteredgallery.size()+1),gallery.get(i).getLocation(),gallery.get(i).getCaption(),gallery.get(i).getImage(),gallery.get(i).getYear(),gallery.get(i).getMonth(),gallery.get(i).getDay()));
+            } else {
+
+            }
+        }
+        return filteredgallery;
+    }
+
+    public List<imgGallery> caption(List<imgGallery> g, String caption) {
+        //SQLiteDatabase db = this.getWritableDatabase();
+        //get all from the database
+        List<imgGallery> gallery = g;
+        List<imgGallery> filteredgallery = new ArrayList<imgGallery>();
+        int i;
+        for (i =0; i<=gallery.size()-1; i++){
+            if (gallery.get(i).getCaption().toLowerCase().contains(caption)){
+                filteredgallery.add(new imgGallery((filteredgallery.size()+1),gallery.get(i).getLocation(),gallery.get(i).getCaption(),gallery.get(i).getImage(),gallery.get(i).getYear(),gallery.get(i).getMonth(),gallery.get(i).getDay()));
+            } else {
+
+            }
+        }
+        return filteredgallery;
+    }
+
 }

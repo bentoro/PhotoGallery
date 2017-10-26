@@ -17,9 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import static com.example.ben.gallery.R.id.gallery;
@@ -31,16 +28,18 @@ public class MainActivity extends AppCompatActivity {
     Button nxt;
     Button prev;
     ImageView image;
-    EditText caption;
-    boolean date;
-    boolean cap;
-    boolean location;
+    EditText capt;
+    boolean date = false;
+    boolean caption = false;
+    boolean locat = false;
     int y1;
     int y2;
     int m1;
     int m2;
     int d1;
     int d2;
+    String cap;
+    String location;
     Uri uri;
     int sz;
 
@@ -51,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        System.out.println("ONCREATE");
         SharedPreferences settings = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
         if (settings.contains("y1") && settings.contains("y2")&& settings.contains("m1")&& settings.contains("m2")
                 && settings.contains("d1")&& settings.contains("d2")) {
@@ -61,31 +61,110 @@ public class MainActivity extends AppCompatActivity {
             y2=settings.getInt("y2",min);
             m2=settings.getInt("m2",min);
             d2=settings.getInt("d2",min);
-            image = (ImageView) findViewById(R.id.imagegallery);
-            caption = (EditText) findViewById(R.id.caption);
-            List<imgGallery> gallery = date(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2);
+            List<imgGallery> gallery = db.date(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2);
             max = gallery.size()-1;
             sz=gallery.size();
             date = true;
+            System.out.println("date set");
 
-        }  else {
+        } if(settings.contains("caption")){
+            DBHandler db = new DBHandler(this);
+            cap=settings.getString("caption"," ");
+            List<imgGallery> gallery = db.caption(db.getAllimgGallerys(),cap);
+            max = gallery.size()-1;
+            sz=gallery.size();
+            caption = true;
+            System.out.println("location: "+location);
+            System.out.println("date: "+date);
+            System.out.println("caption set");
+        } if (settings.contains("location")){
+            location = settings.getString("location", " ");
+            DBHandler db = new DBHandler(this);
+            List<imgGallery> gallery = db.location(db.getAllimgGallerys(),location);
+            max = gallery.size()-1;
+            sz=gallery.size();
+            locat = true;
+            System.out.println("location set");
+        } if (settings.contains("y1") && settings.contains("y2")&& settings.contains("m1")&& settings.contains("m2")
+                && settings.contains("d1")&& settings.contains("d2") && settings.contains("caption")){
+            y1=settings.getInt("y1",min);
+            m1=settings.getInt("m1",min);
+            d1=settings.getInt("d1",min);
+            y2=settings.getInt("y2",min);
+            m2=settings.getInt("m2",min);
+            d2=settings.getInt("d2",min);
+            cap = settings.getString("caption","");
+            DBHandler db = new DBHandler(this);
+            List<imgGallery> gallery = db.dateCaption(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2,cap);
+            max = gallery.size()-1;
+            sz = gallery.size();
+            caption = true;
+            date = true;
+            System.out.println("caption: "+caption);
+            System.out.println("location: "+locat);
+            System.out.println("date: "+date);
+            System.out.println("caption date set");
+        } if (settings.contains("y1") && settings.contains("y2")&& settings.contains("m1")&& settings.contains("m2")
+                && settings.contains("d1")&& settings.contains("d2") && settings.contains("caption") && settings.contains("location")) {
+            y1=settings.getInt("y1",min);
+            m1=settings.getInt("m1",min);
+            d1=settings.getInt("d1",min);
+            y2=settings.getInt("y2",min);
+            m2=settings.getInt("m2",min);
+            d2=settings.getInt("d2",min);
+            cap = settings.getString("caption","");
+            location=settings.getString("location","");
+            DBHandler db = new DBHandler(this);
+            List<imgGallery> gallery = db.dateCaptionLocation(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2,cap,location);
+            max = gallery.size()-1;
+            sz = gallery.size();
+            date = true;
+            caption = true;
+            locat = true;
+            System.out.println("caption: "+caption);
+            System.out.println("location: "+location);
+            System.out.println("date: "+date);
+            System.out.println("ALL set");
+        } if(settings.contains("y1") && settings.contains("y2")&& settings.contains("m1")&& settings.contains("m2")
+                && settings.contains("d1")&& settings.contains("d2") && settings.contains("location")){
+            location=settings.getString("location","");
+            y1=settings.getInt("y1",min);
+            m1=settings.getInt("m1",min);
+            d1=settings.getInt("d1",min);
+            y2=settings.getInt("y2",min);
+            m2=settings.getInt("m2",min);
+            d2=settings.getInt("d2",min);
+            DBHandler db = new DBHandler(this);
+            List<imgGallery> gallery = db.dateLocation(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2,location);
+            max = gallery.size()-1;
+            sz = gallery.size();
+            date = true;
+            locat = true;
+            System.out.println("caption: "+caption);
+            System.out.println("location: "+locat);
+            System.out.println("date: "+date);
+            System.out.println("date location set");
+        } else {
             DBHandler db = new DBHandler(this);
             List<imgGallery> gallery = db.getAllimgGallerys();
             max = gallery.size()-1;
             sz=gallery.size();
         }
+        image = (ImageView) findViewById(gallery);
+        capt = (EditText) findViewById(R.id.caption);
         setFirst();
         addListenerOnButton();
     }
 
     public void addListenerOnButton() {
         image = (ImageView) findViewById(gallery);
-        Button capture = (Button) findViewById(R.id.btn_capture);
+        Button camera  = (Button) findViewById(R.id.btn_capture);
         Button search = (Button) findViewById(R.id.search);
         prev = (Button) findViewById(R.id.btn_prev);
         nxt = (Button) findViewById(R.id.btn_nxt);
         Button s = (Button) findViewById(R.id.btn_s);
         Button exit = (Button) findViewById(R.id.btn_exit);
+        Button l = (Button) findViewById(R.id.btn_location);
 
         search.setOnClickListener(new View.OnClickListener() {
                                        @Override
@@ -94,14 +173,14 @@ public class MainActivity extends AppCompatActivity {
                                        }
                                    });
 
-        capture.setOnClickListener(new OnClickListener() {
+        camera.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,Capture.class));
             }
 
         });
-        capture.setOnClickListener(new OnClickListener() {
+        camera.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -129,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
         s.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,search.class));
+                startActivity(new Intent(MainActivity.this,caption.class));
             }
         });
 
@@ -139,6 +218,15 @@ public class MainActivity extends AppCompatActivity {
                 clear();
             }
         });
+
+        l.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(MainActivity.this,location.class));
+            }
+        });
+
+
     }
 
     public void clear(){
@@ -146,87 +234,211 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = settings.edit();
             editor.clear();
             editor.commit();
-            finish();
-            System.exit(0);
+            startActivity(new Intent(MainActivity.this,MainActivity.class));
+
     }
 
     public void setFirst(){
-        image = (ImageView) findViewById(gallery);
-        caption = (EditText) findViewById(R.id.caption);
-        caption.setEnabled(false);
-        DBHandler db = new DBHandler(this);
-        printDb();
-        List<imgGallery> gallery;
-        if(date == true){
-            gallery = date(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2);
-        } else{
-            gallery = db.getAllimgGallerys();
-        }
 
+        capt.setEnabled(false);
+        DBHandler db = new DBHandler(this);
+        List<imgGallery> gallery;
+        if(date == true && caption == true && locat == true){
+            gallery = db.dateCaptionLocation(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2,cap,location);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("caption: "+caption);
+            System.out.println("location: "+locat);
+            System.out.println("date: "+date);
+        } else if(date == true && caption == true){
+            gallery = db.dateCaption(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2,cap);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("caption: "+caption);
+            System.out.println("location: "+locat);
+            System.out.println("date: "+date);
+        }  else if(locat == true && caption == true){
+            gallery = db.CaptionLocation(db.getAllimgGallerys(),cap,location);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("caption: "+caption);
+            System.out.println("location: "+locat);
+            System.out.println("date: "+date);
+        } else if(date == true && locat == true){
+            gallery = db.dateLocation(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2,location);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("caption: "+caption);
+            System.out.println("location: "+locat);
+            System.out.println("date: "+date);
+        } else if(date == true){
+            gallery = db.date(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("date: "+date);
+        } else if (caption == true){
+            System.out.println("WHAT IS CAP: "+cap);
+            gallery = db.caption(db.getAllimgGallerys(),cap);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("caption: "+caption);
+        } else if(locat == true){
+            gallery = db.location(db.getAllimgGallerys(),location);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("location: "+locat);
+        }  else {
+            System.out.println("nothing");
+            gallery = db.getAllimgGallerys();
+            max = gallery.size()-1;
+        }
         if( sz ==0){
-        System.out.println("Database is empty");
         } else {
-            System.out.println("IMAGE URL"+ gallery.get(0).getImage());
             image.setRotation((float) 90);
             image.setImageBitmap(getThumbnailBitmap(gallery.get(current).getImage(), 400));
-            caption.setText(gallery.get(current).getCaption());
+            capt.setText(gallery.get(current).getCaption());
+            System.out.println("current: "+current);
+            System.out.println("max: "+max);
+            System.out.println("min: "+min);
+
         }
     }
 
     public void prev(){
-        image = (ImageView) findViewById(gallery);
-        caption = (EditText) findViewById(R.id.caption);
-        caption.setEnabled(false);
+
+        capt.setEnabled(false);
         DBHandler db = new DBHandler(this);
-        printDb();
         List<imgGallery> gallery;
-        if(date == true){
-            gallery = date(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2);
-        } else{
+        if(date == true && caption == true && locat == true){
+            gallery = db.dateCaptionLocation(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2,cap,location);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("caption: "+caption);
+            System.out.println("location: "+locat);
+            System.out.println("date: "+date);
+        } else if(date == true && caption == true){
+            gallery = db.dateCaption(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2,cap);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("caption: "+caption);
+            System.out.println("location: "+locat);
+            System.out.println("date: "+date);
+        }  else if(locat == true && caption == true){
+            gallery = db.CaptionLocation(db.getAllimgGallerys(),cap,location);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("caption: "+caption);
+            System.out.println("location: "+locat);
+            System.out.println("date: "+date);
+        } else if(date == true && locat == true){
+            gallery = db.dateLocation(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2,location);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("caption: "+caption);
+            System.out.println("location: "+locat);
+            System.out.println("date: "+date);
+        } else if(date == true){
+            gallery = db.date(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("date: "+date);
+        } else if (caption == true){
+            System.out.println("WHAT IS CAP: "+cap);
+            gallery = db.caption(db.getAllimgGallerys(),cap);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("caption: "+caption);
+        } else if(locat == true){
+            gallery = db.location(db.getAllimgGallerys(),location);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("location: "+locat);
+        }  else {
+            System.out.println("nothing");
             gallery = db.getAllimgGallerys();
+            max = gallery.size()-1;
         }
         if( sz ==0){
 
         } else{
-            System.out.println("max: "+max);
-            System.out.println("CURRENT: " +current);
             if (current == min){
 
             } else if (current > min){
                 current--;
                 image.setImageBitmap(getThumbnailBitmap(gallery.get(current).getImage(), 400));
-                caption.setText(gallery.get(current).getCaption());
-
-                System.out.println("CURRENT: " +current);
+                capt.setText(gallery.get(current).getCaption());
+                System.out.println("current: "+current);
+                System.out.println("max: "+max);
+                System.out.println("min: "+min);
             }
         }
     }
 
     public void next(){
-        image = (ImageView) findViewById(gallery);
-        caption = (EditText) findViewById(R.id.caption);
-        caption.setEnabled(false);
+
+        capt.setEnabled(false);
         DBHandler db = new DBHandler(this);
         List<imgGallery> gallery;
-        if(date == true){
-            gallery = date(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2);
-        } else{
+        if(date == true && caption == true && locat == true){
+            gallery = db.dateCaptionLocation(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2,cap,location);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("caption: "+caption);
+            System.out.println("location: "+locat);
+            System.out.println("date: "+date);
+        } else if(date == true && caption == true){
+            gallery = db.dateCaption(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2,cap);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("caption: "+caption);
+            System.out.println("location: "+locat);
+            System.out.println("date: "+date);
+        }  else if(locat == true && caption == true){
+            gallery = db.CaptionLocation(db.getAllimgGallerys(),cap,location);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("caption: "+caption);
+            System.out.println("location: "+locat);
+            System.out.println("date: "+date);
+        } else if(date == true && locat == true){
+            gallery = db.dateLocation(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2,location);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("caption: "+caption);
+            System.out.println("location: "+locat);
+            System.out.println("date: "+date);
+        } else if(date == true){
+            gallery = db.date(db.getAllimgGallerys(),y1,y2,m1,m2,d1,d2);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("date: "+date);
+        } else if (caption == true){
+            System.out.println("WHAT IS CAP: "+cap);
+            gallery = db.caption(db.getAllimgGallerys(),cap);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("caption: "+caption);
+        } else if(locat == true){
+            gallery = db.location(db.getAllimgGallerys(),location);
+            max = gallery.size()-1;
+            printDb(gallery);
+            System.out.println("location: "+locat);
+        }  else {
+            System.out.println("nothing");
             gallery = db.getAllimgGallerys();
+            max = gallery.size()-1;
         }
-
         if( sz ==0){
 
         } else{
-            System.out.println("max: "+max);
-            System.out.println("CURRENT: " +current);
             if (current == max){
             } else if (current < max){
                 current++;
                 image.setImageBitmap(getThumbnailBitmap(gallery.get(current).getImage(), 400));
-                caption.setText(gallery.get(current).getCaption());
-
-                System.out.println("CURRENT: " +current);
-
+                capt.setText(gallery.get(current).getCaption());
+                System.out.println("current: "+current);
+                System.out.println("max: "+max);
+                System.out.println("min: "+min);
             }
         }
 
@@ -270,104 +482,12 @@ public class MainActivity extends AppCompatActivity {
         return cursor.getString(column_index);
     }
 
-    public void printDb(){
-        DBHandler db = new DBHandler(this);
-        List<imgGallery> gallery = db.getAllimgGallerys();
+    public void printDb(List<imgGallery> db ){
+        List<imgGallery> gallery = db;
         for (imgGallery imgGallery : gallery) {
             String log = "Id: "+ imgGallery.getId() + " ,Location: " + imgGallery.getLocation() + " ,Caption: " + imgGallery.getCaption() + "Image path: " + imgGallery.getImage()+" ,Time: " + imgGallery.getYear()+"/"+imgGallery.getMonth()+"/"+imgGallery.getDay();
             Log.d("gallery: : ", log);
         }
     }
-
-    public List<imgGallery> date(List<imgGallery> g, int y1, int y2,int m1,int m2, int d1, int d2) {
-        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-        DBHandler db = new DBHandler(this);
-        //get all from the database
-        List<imgGallery> gallery = g;
-        List<imgGallery> filteredgallery = new ArrayList<imgGallery>();
-        int i;
-        for (i =0; i<=gallery.size()-1; i++){
-            Calendar cal = Calendar.getInstance();
-            cal.clear();
-            cal.set(Calendar.YEAR, y1);
-            cal.set(Calendar.MONTH, (m1-1));
-            cal.set(Calendar.DAY_OF_MONTH, d1);
-            String dat = f.format(cal.getTime());
-
-            Calendar cal1 = Calendar.getInstance();
-            cal1.clear();
-            cal1.set(Calendar.YEAR, gallery.get(i).getYear());
-            cal1.set(Calendar.MONTH, (gallery.get(i).getMonth()-1));
-            cal1.set(Calendar.DAY_OF_MONTH, gallery.get(i).getDay());
-            String dat1 = f.format(cal1.getTime());
-
-            Calendar cal2 = Calendar.getInstance();
-            cal2.clear();
-            cal2.set(Calendar.YEAR, y2);
-            cal2.set(Calendar.MONTH, (m2-1));
-            cal2.set(Calendar.DAY_OF_MONTH, d2);
-            String dat2 = f.format(cal2.getTime());
-
-
-            if((((cal1)).compareTo((cal)) * (cal2).compareTo((cal1)) >= 0)){
-                filteredgallery.add(new imgGallery((filteredgallery.size()+1),gallery.get(i).getLocation(),gallery.get(i).getCaption(),gallery.get(i).getImage(),gallery.get(i).getYear(),gallery.get(i).getMonth(),gallery.get(i).getDay()));
-            } else {
-
-            }
-        }
-        return filteredgallery;
-    }
-
-    /*public List<imgGallery> date(int y1, int y2,int m1,int m2, int d1, int d2) {
-        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-        DBHandler db = new DBHandler(this);
-        //get all from the database
-        List<imgGallery> gallery = db.getAllimgGallerys();
-        List<imgGallery> filteredgallery = new ArrayList<imgGallery>();
-        int i;
-        for (i =0; i<=gallery.size()-1; i++){
-            Calendar cal = Calendar.getInstance();
-            cal.clear();
-            cal.set(Calendar.YEAR, y1);
-            cal.set(Calendar.MONTH, (m1-1));
-            cal.set(Calendar.DAY_OF_MONTH, d1);
-            String dat = f.format(cal.getTime());
-
-            Calendar cal1 = Calendar.getInstance();
-            cal1.clear();
-            cal1.set(Calendar.YEAR, gallery.get(i).getYear());
-            cal1.set(Calendar.MONTH, (gallery.get(i).getMonth()-1));
-            cal1.set(Calendar.DAY_OF_MONTH, gallery.get(i).getDay());
-            String dat1 = f.format(cal1.getTime());
-            //System.out.println(dat1);
-
-            Calendar cal2 = Calendar.getInstance();
-            cal2.clear();
-            cal2.set(Calendar.YEAR, y2);
-            cal2.set(Calendar.MONTH, (m2-1));
-            cal2.set(Calendar.DAY_OF_MONTH, d2);
-            String dat2 = f.format(cal2.getTime());
-            //System.out.println(dat2);
-            System.out.println("between: "+dat+"and"+dat1+"this"+dat2);
-
-
-            if((((cal1)).compareTo((cal)) * (cal2).compareTo((cal1)) >= 0)){
-                System.out.println(((cal1)).compareTo((cal)));
-                System.out.println((cal2).compareTo((cal1)));
-                System.out.println("added: "+gallery.get(i).getMonth()+"-"+gallery.get(i).getDay());
-                filteredgallery.add(new imgGallery((filteredgallery.size()+1),gallery.get(i).getLocation(),gallery.get(i).getCaption(),gallery.get(i).getImage(),gallery.get(i).getYear(),gallery.get(i).getMonth(),gallery.get(i).getDay()));
-                //System.out.println("ADDED DATE: "+filteredgallery.get(filteredgallery.size()).getMonth()+"-"+filteredgallery.get(filteredgallery.size()+1).getDay());
-            } else {
-
-            }
-        }
-        int d;
-        System.out.println("SIZE: "+filteredgallery.size());
-        for(d=0;i<=filteredgallery.size()-1; i++){
-            System.out.println(filteredgallery.get(d).getYear()+"-"+filteredgallery.get(d).getMonth()+"-"+filteredgallery.get(d).getDay());
-        }
-        return filteredgallery;
-    }*/
-
     }
 

@@ -23,12 +23,11 @@
         </activity>
         <activity android:name=".date"/>
         <activity android:name=".Capture"/>
-        <activity android:name=".Facebook"/>
-        <activity android:name=".endDate"/>
+        <activity android:name=".Facebook"/>>
         <activity android:name=".search"/>
-        <activity android:name=".date">
+        <activity android:name=".caption">
         </activity>
-        <activity android:name=".a">
+        <activity android:name=".location">
         </activity>
     </application>
 

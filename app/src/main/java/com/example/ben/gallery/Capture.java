@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
@@ -35,7 +34,6 @@ public class Capture extends AppCompatActivity {
         ImageView image = (ImageView) findViewById(R.id.imageView);
         image.setRotation((float) 90);
         image.setImageBitmap(getThumbnailBitmap(url, 400));
-
         addListenerOnButton();
     }
 
@@ -48,7 +46,6 @@ public class Capture extends AppCompatActivity {
                 startActivity(new Intent(Capture.this,MainActivity.class));
             }
         });
-
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

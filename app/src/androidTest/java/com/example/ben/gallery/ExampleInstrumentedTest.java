@@ -26,7 +26,7 @@ public class ExampleInstrumentedTest {
         DBHandler db = new DBHandler(appContext);
         //Id: 4 ,Location: White Avenue ,Caption: Image path: /storage/emulated/0/DCIM/Camera/20171019_123559.jpg ,Time: 2017/9/5
         //db.addimgGallery(new imgGallery(1,"White Avenue","Unit testing","/storage/emulated/0/DCIM/Camera/20171019_123559.jpg",2017,11,5));
-        List<imgGallery> gallery = db.date(2017,2017,11,11,1,10);
+        List<imgGallery> gallery = db.date(db.getAllimgGallerys(),2017,2017,11,11,1,10);
         //List<imgGallery> gallery = db.date(2016,2017,11,12,1,10);
 
 
